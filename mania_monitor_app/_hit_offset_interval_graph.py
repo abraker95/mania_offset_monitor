@@ -102,6 +102,9 @@ class HitOffsetIntervalGraph():
                 x_note_intervals.append(peak)
                 timestamps.append(timestamp)
 
+        if len(x_note_intervals) == 0:
+            return
+
         # Calculate view
         xMin = min(x_note_intervals) - 100
         xMax = max(x_note_intervals) + 100
@@ -128,6 +131,9 @@ class HitOffsetIntervalGraph():
 
 
     def __plot_model(self, data):
+        if self.__x_note_intervals.shape[0] == 0:
+            return
+
         # Determine the y offset by getting the average mean offset within 16 ms range (60 fps)
         hor_area = self.__y_mean_offsets[(-16 <= self.__y_mean_offsets) & (self.__y_mean_offsets < 16)]
         p0y = np.average(hor_area)
@@ -171,7 +177,9 @@ class HitOffsetIntervalGraph():
         # Get a region of points between 0 and 2 note interval
         # Find the point that is left most in that region
         # Then shift from left towards center of data using stdev
-        p0x = min(self.__x_note_intervals[(0 <= self.__y_mean_offsets) & (self.__y_mean_offsets < 2)]) # + 2*p0y_std
+        try: p0x = min(self.__x_note_intervals[(0 <= self.__y_mean_offsets) & (self.__y_mean_offsets < 2)]) # + 2*p0y_std
+        except ValueError: 
+            return
         
         # Get a region of point that are greater than 0 mean offset
         # Find the point that is left most in that region and top most in that region.
@@ -182,9 +190,8 @@ class HitOffsetIntervalGraph():
         r = (p0y - p1y)/(p0x - p1x)
         t_min = p0x
 
-
         err = Utils.calc_err(self.__x_note_intervals, self.__y_mean_offsets, r, t_min, p0y)/len(self.__x_note_intervals)
-        print(f'r = {r:.2f}   t_min = {t_min:.2f} ms ({(1000*60)/(t_min*2):.2f} bpm)  y = {p0y:.2f} ms  err = {err}')
+        print(f'r = {r:.2f}   t_min = {t_min:.2f} ms ({(1000*60)/(t_min*2):.2f} bpm)  y = {p0y:.2f} ms  err = {err:.4f}')
         curve_fit = Utils.softplus_func(self.__x_note_intervals, r, t_min, p0y)
 
         idx_sort = np.argsort(self.__x_note_intervals)
