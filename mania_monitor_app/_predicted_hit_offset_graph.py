@@ -41,7 +41,7 @@ class PredictedHitOffsetGraph():
         # Determine what was the latest play
         data_filter = \
             (data[:, Data.TIMESTAMP] == max(data[:, Data.TIMESTAMP])) & \
-            ((data[:, Data.HIT_TYPE] == ManiaScoreData.TYPE_HITP) | (data[:, Data.HIT_TYPE] == ManiaScoreData.TYPE_MISS))
+            ((data[:, Data.HIT_TYPE] == ManiaScoreData.TYPE_HITP) | (data[:, Data.HIT_TYPE] == ManiaScoreData.TYPE_MISSP))
         data_slice = data[data_filter]
 
         # Get intervals for notes on the specific columns they occur at

@@ -266,7 +266,7 @@ class ManiaHitOffsetsMonitor(QtGui.QMainWindow):
             score_col = score_data.loc[col]
 
             # Get score times associated with successful press for current column
-            hit_filter    = score_col['type'] == ManiaScoreData.TYPE_MISS
+            hit_filter    = score_col['type'] == ManiaScoreData.TYPE_MISSP
             hit_map_times = score_col['map_t'][hit_filter].values
 
             # Correlate map's note press timings to scoring press times
