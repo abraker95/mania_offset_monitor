@@ -1,15 +1,7 @@
-import os
-import sys
-import time
-import numpy as np
-
 import pyqtgraph
-from pyqtgraph import dockarea
 from pyqtgraph.Qt import QtCore, QtGui
-
 from PyQt5.QtGui import *
 
-from osu_analysis import ManiaScoreData
 from osu_performance_recorder import Recorder, Data
 
 
@@ -21,6 +13,7 @@ class ManiaMonitor(QtGui.QMainWindow):
     from ._note_interval_graph import NoteIntervalGraph
     from ._hit_distr_graph import HitDistrGraph
     from ._hit_offset_interval_graph import HitOffsetIntervalGraph
+    from ._hit_offset_interval_graph_new import HitOffsetIntervalGraphNew
     from ._plays_graph import PlaysGraph
     from ._predicted_hit_offset_graph import PredictedHitOffsetGraph
 
@@ -46,10 +39,14 @@ class ManiaMonitor(QtGui.QMainWindow):
         ManiaMonitor.HitOffsetGraph.__init__(self, pos='below', relative_to='ReleaseOffsetGraph')
         ManiaMonitor.PredictedHitOffsetGraph.__init__(self, pos='below', relative_to='HitOffsetGraph')
         ManiaMonitor.HitOffsetIntervalGraph.__init__(self, pos='bottom', relative_to='NoteIntervalGraph')
+        ManiaMonitor.HitOffsetIntervalGraphNew.__init__(self, pos='below', relative_to='HitOffsetIntervalGraph')
         ManiaMonitor.PlaysGraph.__init__(self, pos='bottom')
 
         ManiaMonitor.PlaysGraph.region_changed_event.connect(
-            lambda event_data: ManiaMonitor.HitOffsetIntervalGraph._plot_data(self, self.data_cache, event_data)
+            lambda event_data: (
+                ManiaMonitor.HitOffsetIntervalGraph._plot_data(self, self.data_cache, event_data),
+                ManiaMonitor.HitOffsetIntervalGraphNew._plot_data(self, self.data_cache, event_data)
+            )
         )
 
         ManiaMonitor.HitOffsetIntervalGraph.model_updated_event.connect(

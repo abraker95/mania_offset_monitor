@@ -19,7 +19,7 @@ class NoteIntervalGraph():
             graph_id    = self.__id,
             pos         = pos,
             relative_to = relative_to,
-            widget      = pyqtgraph.PlotWidget(title='Intervals'),
+            widget      = pyqtgraph.PlotWidget(title='Jack Intervals'),
         )
 
         self.graphs[self.__id]['widget'].getPlotItem().getAxis('left').enableAutoSIPrefix(False)
