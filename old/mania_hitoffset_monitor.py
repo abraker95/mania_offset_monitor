@@ -1,8 +1,10 @@
 import os
+import sys
 import time
 import math
 import json
 import numpy as np
+import tinydb
 
 import pyqtgraph
 from pyqtgraph import dockarea
@@ -14,7 +16,7 @@ from osu_analysis import ManiaActionData, ManiaScoreData
 from osu_analysis import BeatmapIO, ReplayIO, Gamemode
 from osu_db_reader.osu_db_reader import OsuDbReader
 from monitor import Monitor
-from miss_plot import MissPlotItem
+from plots.miss_plot import MissPlotItem
 
 
 
@@ -557,3 +559,9 @@ class ManiaHitOffsetsMonitor(QtGui.QMainWindow):
     def __tick(self, ms_sleep=0.1):
         QApplication.instance().processEvents()
         time.sleep(min(ms_sleep, 0.1))
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex  = ManiaHitOffsetsMonitor('C:/Games/osu!')
+    sys.exit(app.exec_())

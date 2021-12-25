@@ -241,14 +241,14 @@ class Recorder(QtCore.QObject):
                     intervals[1:] = np.diff(ref_col_times)
                     intervals[0] = np.inf
                 else:
-                    # Otherwise get note interval difference to nearest precending note
+                    # Otherwise get note interval difference to nearest preceding note
                     intervals = self.__diff_nearest(ref_col_times.values, oth_col_times.values)
 
                 # Save note interval data reference to column
                 note_intervals[col] = intervals
 
             # Append data entries for column
-            data.append(np.c_[id_dat, timestamp, timings, offsets, htypes, col_dat, np.asarray(note_intervals).T])
+            data.append(np.c_[ id_dat, timestamp, timings, offsets, htypes, col_dat, np.asarray(note_intervals).T ])
 
         # Concate data accross all columns
         return np.concatenate(data)
